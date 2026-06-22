@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getAllRequests } from "../services/requestService";
+import Navbar from "../components/Navbar";
 
 export default function BoutiqueDashboard() {
+
   const [requests, setRequests] = useState([]);
 
   useEffect(() => {
@@ -20,6 +22,8 @@ export default function BoutiqueDashboard() {
 
  
 return (
+   <>
+      <Navbar />
   <div className="min-h-screen bg-[#020b3a] text-white">
     <div className="max-w-7xl mx-auto px-6 py-12">
 
@@ -115,5 +119,6 @@ return (
 
     </div>
   </div>
+   </>
 );
 }

@@ -1,25 +1,39 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCustomerRequests } from "../services/requestService";
+import { logout } from "../services/authService";
+import Navbar from "../components/Navbar";
 
 export default function CustomerDashboard() {
+ 
   const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+const handleLogout = async () => {
+  await logout();
+
+  localStorage.removeItem("user");
+
+  navigate("/");
+};
 
   useEffect(() => {
     const fetchRequests = async () => {
       try {
-          const user = JSON.parse(
-            localStorage.getItem("user")
-          );
+        const user = JSON.parse(
+          localStorage.getItem("user")
+        );
 
-          const data =
-            await getCustomerRequests(
-              user.id
-            );
+        const data =
+          await getCustomerRequests(
+            user.id
+          );
 
         setRequests(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -27,16 +41,43 @@ export default function CustomerDashboard() {
   }, []);
 
  return (
+ <>
+    <Navbar />
+  
   <div className="min-h-screen bg-[#020b3a] text-white">
     <div className="max-w-7xl mx-auto px-6 py-12">
 
-      <h1 className="text-5xl font-bold mb-3">
-        My Requests ✨
-      </h1>
+<div className="flex flex-col md:flex-row md:justify-between md:items-center mb-10">
 
-      <p className="text-slate-400 mb-10">
-        Track your custom outfit requests.
-      </p>
+  <div>
+    <h1 className="text-5xl font-bold mb-3">
+      My Requests ✨
+    </h1>
+
+    <p className="text-slate-400">
+      Track your custom outfit requests.
+    </p>
+  </div>
+
+  <div className="flex gap-4 mt-6 md:mt-0">
+
+    <Link
+      to="/create-request"
+      className="bg-rose-300 text-slate-900 px-6 py-3 rounded-full font-bold hover:bg-rose-200"
+    >
+      + Create Request
+    </Link>
+
+    <button
+      onClick={handleLogout}
+      className="bg-slate-800 px-6 py-3 rounded-full font-bold hover:bg-slate-700"
+    >
+      Logout
+    </button>
+
+  </div>
+
+</div>
 
       {/* Stats Cards */}
       <div className="grid md:grid-cols-3 gap-6 mb-10">
@@ -80,7 +121,38 @@ export default function CustomerDashboard() {
         </div>
       </div>
 
-      {/* Request Cards */}
+    {/* Loading State */}
+    {loading && (
+      <div className="bg-slate-900 rounded-3xl p-12 border border-slate-800 text-center mb-10">
+        <p className="text-slate-400">
+          Loading requests...
+        </p>
+      </div>
+    )}
+
+    {/* Empty State */}
+      
+    {!loading && requests.length === 0 && (
+      <div className="bg-slate-900 rounded-3xl p-12 border border-slate-800 text-center mb-10">
+
+        <h2 className="text-3xl font-bold mb-4">
+          No Requests Yet ✨
+        </h2>
+
+        <p className="text-slate-400 mb-8 max-w-md mx-auto">
+          Create your first outfit request and start receiving proposals from talented boutiques.
+        </p>
+
+        <Link
+          to="/create-request"
+          className="inline-block bg-rose-300 text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-rose-200"
+        >
+          + Create Request
+        </Link>
+
+      </div>
+    )}
+    {/* Request Cards */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {requests.map((request) => (
           <div
@@ -130,5 +202,6 @@ export default function CustomerDashboard() {
 
     </div>
   </div>
+   </>
 );
 }

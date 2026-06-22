@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "../components/Navbar";
 
 export default function CreateRequest() {
 const [formData, setFormData] = useState({
@@ -66,6 +67,8 @@ navigate("/customer-dashboard");
   }
 };
   return (
+     <>
+        <Navbar />
     <div className="min-h-screen bg-[#020726] text-white p-10">
       <div className="max-w-2xl mx-auto bg-slate-900 p-8 rounded-3xl">
         <h1 className="text-4xl font-bold mb-8">
@@ -128,5 +131,7 @@ navigate("/customer-dashboard");
         </form>
       </div>
     </div>
+     </>
+        
   );
 }

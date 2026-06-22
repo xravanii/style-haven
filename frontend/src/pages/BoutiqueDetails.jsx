@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getBoutiqueById } from "../services/boutiqueService";
+import Navbar from "../components/Navbar";
 
 export default function BoutiqueDetails() {
   const { id } = useParams();
@@ -29,6 +30,10 @@ export default function BoutiqueDetails() {
   }
 
   return (
+
+    <>
+    <Navbar />
+
     <div className="min-h-screen bg-slate-950 text-white p-10">
       <h1 className="text-5xl font-bold">
         {boutique.name}
@@ -81,5 +86,6 @@ export default function BoutiqueDetails() {
   ))}
 </div>
     </div>
+    </>
   );
 }

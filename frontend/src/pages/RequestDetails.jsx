@@ -4,6 +4,7 @@ import {
   getRequestById,
   acceptProposal,
 } from "../services/requestService";
+import Navbar from "../components/Navbar";
 
 export default function RequestDetails() {
   const { id } = useParams();
@@ -51,6 +52,8 @@ export default function RequestDetails() {
 );
 
   return (
+     <>
+        <Navbar />
     <div className="min-h-screen bg-[#020726] text-white p-10">
       <div className="max-w-6xl mx-auto">
 
@@ -179,5 +182,6 @@ export default function RequestDetails() {
 
       </div>
     </div>
+    </>
   );
 }

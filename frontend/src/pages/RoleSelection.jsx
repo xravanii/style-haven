@@ -1,8 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import { updateRole } from "../services/authService";
+import { useEffect } from "react";
 
 export default function RoleSelection() {
   const navigate = useNavigate();
+  useEffect(() => {
+  const user = JSON.parse(
+    localStorage.getItem("user")
+  );
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
+
+  if (
+    user.role === "CUSTOMER"
+  ) {
+    navigate(
+      "/customer-dashboard"
+    );
+  }
+
+  if (
+    user.role ===
+    "BOUTIQUE_OWNER"
+  ) {
+    navigate(
+      "/boutique-dashboard"
+    );
+  }
+}, []);
 const handleRoleSelect = async (
   role
 ) => {

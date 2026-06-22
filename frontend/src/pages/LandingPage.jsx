@@ -1,31 +1,33 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../services/authService";
+import Navbar from "../components/Navbar";
+import fashion1 from "../assets/fashion1.png";
+import fashion2 from "../assets/fashion2.png";
+import fashion3 from "../assets/fashion3.png";
+import fashion4 from "../assets/fashion4.png";
 
 export default function LandingPage() {
+const navigate = useNavigate();
+
+const user = JSON.parse(
+  localStorage.getItem("user")
+);
+
+const handleLogout = async () => {
+  await logout();
+
+  localStorage.removeItem("user");
+
+  navigate("/");
+};
   return (
+     <>
+        <Navbar />
     <div className="min-h-screen bg-slate-950 text-white">
 
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-8 py-5 border-b border-slate-800">
-        <h1 className="text-3xl font-bold text-rose-300">
-          Style Haven
-        </h1>
-
-        <div className="flex gap-6 items-center">
-          <Link
-            to="/boutiques"
-            className="hover:text-rose-300 transition"
-          >
-            Browse Boutiques
-          </Link>
-
-          <Link
-            to="/login"
-            className="bg-rose-300 text-black px-5 py-2 rounded-full font-semibold hover:bg-rose-200 transition"
-          >
-            Login
-          </Link>
-        </div>
-      </nav>
+      
 
       {/* Hero */}
       <section className="max-w-6xl mx-auto px-8 py-24">
@@ -66,13 +68,29 @@ export default function LandingPage() {
           {/* Fashion Grid */}
           <div className="grid grid-cols-2 gap-4">
 
-            <div className="h-64 rounded-3xl bg-rose-200"></div>
+<img
+  src={fashion1}
+  alt=""
+  className="h-64 w-full object-cover rounded-3xl"
+/>
 
-            <div className="h-40 rounded-3xl bg-yellow-100"></div>
+<img
+  src={fashion2}
+  alt=""
+  className="h-40 w-full object-cover rounded-3xl"
+/>
 
-            <div className="h-40 rounded-3xl bg-purple-200"></div>
+<img
+  src={fashion3}
+  alt=""
+  className="h-40 w-full object-cover rounded-3xl"
+/>
 
-            <div className="h-64 rounded-3xl bg-blue-200"></div>
+<img
+  src={fashion4}
+  alt=""
+  className="h-64 w-full object-cover rounded-3xl"
+/>
 
           </div>
         </div>
@@ -183,5 +201,7 @@ export default function LandingPage() {
       </footer>
 
     </div>
+    
+</>
   );
 }
