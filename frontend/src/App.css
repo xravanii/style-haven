@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f8f5f0;
+}
+
+.hero {
+  text-align: center;
+  padding: 100px 20px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 500px;
+  margin: auto;
+}
+
+.hero button {
+  margin-top: 20px;
+  padding: 12px 24px;
+  cursor: pointer;
+}
+
+.how-it-works {
+  padding: 60px 20px;
+}
+
+.steps {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.steps div {
+  background: white;
+  padding: 20px;
+  width: 220px;
+  border-radius: 12px;
+}

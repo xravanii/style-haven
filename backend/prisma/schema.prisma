@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(cuid())
+
+  firebaseUid String @unique
+  email       String @unique
+  name        String
+
+  role Role?
+
+  createdAt      DateTime        @default(now())
+  boutique       Boutique?
+  customRequests CustomRequest[]
+}
+
+model Boutique {
+  id String @id @default(cuid())
+
+  ownerId String @unique
+  owner   User   @relation(fields: [ownerId], references: [id])
+
+  name        String
+  description String
+  city        String
+
+  experienceYears Int?
+
+  profileImage String?
+
+  portfolioItems PortfolioItem[]
+  responses      RequestResponse[]
+
+  createdAt DateTime @default(now())
+}
+
+model PortfolioItem {
+  id String @id @default(cuid())
+
+  boutiqueId String
+  boutique   Boutique @relation(fields: [boutiqueId], references: [id])
+
+  title       String
+  imageUrl    String
+  category    String?
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model CustomRequest {
+  id String @id @default(cuid())
+
+  customerId String
+  customer   User   @relation(fields: [customerId], references: [id])
+
+  title       String
+  description String
+
+  budgetMin Int?
+  budgetMax Int?
+
+  images RequestImage[]
+
+  status RequestStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+
+  responses RequestResponse[]
+
+  selectedResponseId String?
+}
+
+model RequestResponse {
+  id String @id @default(cuid())
+
+  requestId String
+  request   CustomRequest @relation(fields: [requestId], references: [id])
+
+  boutiqueId String
+  boutique   Boutique @relation(fields: [boutiqueId], references: [id])
+
+  feasibility Feasibility
+
+  estimatedPrice Int?
+
+  comment String?
+
+  deliveryDays Int?
+
+  createdAt DateTime @default(now())
+}
+
+model RequestImage {
+  id String @id @default(cuid())
+
+  requestId String
+  request   CustomRequest @relation(fields: [requestId], references: [id])
+
+  imageUrl String
+}
+
+enum Role {
+  CUSTOMER
+  BOUTIQUE_OWNER
+}
+
+enum RequestStatus {
+  PENDING
+  RESPONDED
+  CLOSED
+}
+
+enum Feasibility {
+  FEASIBLE
+  PARTIALLY_FEASIBLE
+  NOT_FEASIBLE
+}
